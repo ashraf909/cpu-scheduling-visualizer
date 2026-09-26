@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+  HTML OWNERSHIP (edit only the part marked with YOUR member number):
+    Member 3 : page skeleton, header title + tabs, Gantt chart + playback panel
+    Member 1 : Module 1 controls, input table, process table, summary tiles
+    Member 2 : Theme/Print buttons, whole Module 2 page
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPU Scheduling Algorithm Visualizer</title>
+<script>
+try {
+  var t = localStorage.getItem("cpu-viz-theme");
+  if (!t) t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", t);
+} catch (e) {}
+</script>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/inputs.css">
+<link rel="stylesheet" href="css/gantt.css">
+<link rel="stylesheet" href="css/module2.css">
+<link rel="stylesheet" href="css/theme-print.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <h1>CPU Scheduling Algorithm Visualizer</h1>
+
+      <!-- ===== MEMBER 2: theme + print buttons ===== -->
+      <div class="header-actions no-print">
+        <button id="theme-toggle" class="btn-ghost" type="button">Dark mode</button>
+        <button id="print-btn" class="btn-ghost" type="button">Print / Save PDF</button>
+      </div>
+      <!-- ===== end MEMBER 2 ===== -->
+    </div>
+    <nav class="tabs no-print">
+      <button class="tab-btn active" data-tab="module1">Module 1: Algorithm Visualization</button>
+      <button class="tab-btn" data-tab="module2">Module 2: Comparative Analysis</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== MODULE 1 ===================== -->
+  <section id="module1" class="tab-panel active">
+    <h2>Algorithm Visualization</h2>
+
+    <!-- ===== MEMBER 1: Module 1 controls + input table ===== -->
+    <div class="controls card">
+      <div class="control-row">
+        <label>Algorithm
+          <select id="m1-algo">
+            <option value="fcfs">FCFS (Non-Preemptive)</option>
+            <option value="sjf">SJF (Non-Preemptive)</option>
+            <option value="priority">Priority (Non-Preemptive)</option>
+            <option value="rr">Round Robin (Preemptive)</option>
+          </select>
+        </label>
+        <label id="m1-priority-order-group">Priority Order
+          <select id="m1-priority-order">
+            <option value="low">Lower number = Higher priority</option>
+            <option value="high">Higher number = Higher priority</option>
+          </select>
+        </label>
+        <label id="m1-quantum-group">Time Quantum
+          <input type="number" id="m1-quantum" min="1" max="50" value="2">
+        </label>
+        <label>Number of Processes
+          <input type="number" id="m1-count" min="1" max="10" value="4">
+        </label>
+        <button id="m1-generate" class="btn-secondary" type="button">Set Processes</button>
+      </div>
+      <p class="hint">Changing the number of processes keeps the values you already typed. Arrival 0&ndash;99, burst 1&ndash;50.</p>
+    </div>
+
+    <div class="card">
+      <div class="input-toolbar no-print">
+        <label>Load example
+          <select id="m1-preset"></select>
+        </label>
+        <span class="toolbar-or">or</span>
+        <label>Random data
+          <button id="m1-random" class="btn-secondary btn-small" type="button">Fill with random values</button>
+        </label>
+      </div>
+      <div class="table-scroll"><table id="m1-input-table" class="input-table"></table></div>
+      <div id="m1-errors" class="error-box hidden" role="alert"></div>
+    </div>
+
+    <button id="m1-run" class="btn-primary no-print" type="button">Run</button>
+    <!-- ===== end MEMBER 1 ===== -->
+
+    <div id="m1-output" class="output hidden">
+
+      <!-- ===== MEMBER 3: Gantt chart + playback panel ===== -->
+      <h3>Gantt Chart</h3>
+      <div id="m1-gantt" class="gantt"></div>
+
+      <div id="m1-playback" class="playback card no-print pb-idle">
+        <div class="pb-controls">
+          <button id="pb-play" class="btn-primary btn-small" type="button">Play</button>
+          <button id="pb-step" class="btn-secondary btn-small" type="button">Step</button>
+          <button id="pb-reset" class="btn-secondary btn-small" type="button">Reset</button>
+          <label class="pb-speed">Speed
+            <select id="pb-speed">
+              <option value="0.5">0.5x</option>
+              <option value="1" selected>1x</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+            </select>
+          </label>
+          <span id="pb-clock" class="pb-clock">Ready</span>
+        </div>
+        <p class="pb-hint">Press Play or Step to watch the CPU run this schedule one time unit at a time.</p>
+        <div class="pb-status">
+          <div><span class="pb-label">CPU</span><span id="pb-cpu"></span></div>
+          <div><span class="pb-label">Ready queue</span><span id="pb-queue"></span></div>
+          <div><span class="pb-label">Finished</span><span id="pb-done"></span></div>
+        </div>
+        <div id="pb-bars" class="pb-bars"></div>
+      </div>
+      <!-- ===== end MEMBER 3 ===== -->
+
+      <!-- ===== MEMBER 1: process table + summary tiles ===== -->
+      <h3>Process Table</h3>
+      <div class="table-scroll"><table id="m1-results" class="results-table"></table></div>
+
+      <div id="m1-summary" class="summary card"></div>
+      <!-- ===== end MEMBER 1 ===== -->
+    </div>
+  </section>
+
+  <!-- ===================== MODULE 2 (all MEMBER 2) ===================== -->
+  <section id="module2" class="tab-panel">
+    <h2>Comparative Analysis</h2>
+
+    <div class="controls card">
+      <div class="control-row">
+        <div class="checkbox-group">
+          <span>Algorithms to compare:</span>
+          <label><input type="checkbox" class="m2-algo-check" value="fcfs" checked> FCFS</label>
+          <label><input type="checkbox" class="m2-algo-check" value="sjf" checked> SJF</label>
+          <label><input type="checkbox" class="m2-algo-check" value="priority"> Priority</label>
+          <label><input type="checkbox" class="m2-algo-check" value="rr"> Round Robin</label>
+        </div>
+        <label id="m2-priority-order-group">Priority Order
+          <select id="m2-priority-order">
+            <option value="low">Lower number = Higher priority</option>
+            <option value="high">Higher number = Higher priority</option>
+          </select>
+        </label>
+        <label id="m2-quantum-group">Time Quantum
+          <input type="number" id="m2-quantum" min="1" max="50" value="2">
+        </label>
+        <label>Number of Processes
+          <input type="number" id="m2-count" min="1" max="10" value="4">
+        </label>
+        <button id="m2-generate" class="btn-secondary" type="button">Set Processes</button>
+      </div>
+      <p class="hint">Select 2 or more algorithms. The same process data is used for every selected algorithm.</p>
+    </div>
+
+    <div class="card">
+      <div class="input-toolbar no-print">
+        <label>Load example
+          <select id="m2-preset"></select>
+        </label>
+        <span class="toolbar-or">or</span>
+        <label>Random data
+          <button id="m2-random" class="btn-secondary btn-small" type="button">Fill with random values</button>
+        </label>
+      </div>
+      <div class="table-scroll"><table id="m2-input-table" class="input-table"></table></div>
+      <div id="m2-errors" class="error-box hidden" role="alert"></div>
+    </div>
+
+    <button id="m2-run" class="btn-primary no-print" type="button">Compare</button>
+
+    <div id="m2-output" class="output hidden">
+      <div id="m2-results-container"></div>
+
+      <h3>Comparative Summary</h3>
+      <div class="table-scroll"><table id="m2-summary-table" class="results-table"></table></div>
+
+      <div id="m2-verdict" class="verdict card"></div>
+
+      <div class="card">
+        <h4 class="chart-title">Average waiting and turnaround time</h4>
+        <div class="chart-legend">
+          <span><span class="legend-swatch" style="background:#2563eb"></span>Avg Waiting Time</span>
+          <span><span class="legend-swatch" style="background:#d97706"></span>Avg Turnaround Time</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="m2-chart" role="img" aria-label="Bar chart comparing average waiting and turnaround time of the selected algorithms"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4 class="chart-title">Waiting time per process</h4>
+        <div id="m2-chart2-legend" class="chart-legend"></div>
+        <div class="chart-wrap">
+          <canvas id="m2-chart2" role="img" aria-label="Bar chart of each process's waiting time under every selected algorithm"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>OS Lab Project &mdash; CPU Scheduling Algorithm Visualizer</p>
+</footer>
+
+<!-- Chart library (loaded from the internet) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<!-- Shared helpers -->
+<script src="js/utils.js"></script>
+
+<!-- Algorithms -->
+<script src="js/algorithms/common.js"></script>
+<script src="js/algorithms/fcfs.js"></script>
+<script src="js/algorithms/sjf.js"></script>
+<script src="js/algorithms/priority.js"></script>
+<script src="js/algorithms/roundrobin.js"></script>
+<script src="js/algorithms/registry.js"></script>
+
+<!-- User interface (order matters: main.js must stay last) -->
+<script src="js/ui/validation.js"></script>
+<script src="js/ui/inputs.js"></script>
+<script src="js/ui/results.js"></script>
+<script src="js/ui/gantt.js"></script>
+<script src="js/ui/playback.js"></script>
+<script src="js/ui/module1.js"></script>
+<script src="js/ui/module2.js"></script>
+<script src="js/ui/theme-print.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

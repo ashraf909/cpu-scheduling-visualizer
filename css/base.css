@@ -1,0 +1,270 @@
+/* OWNER: Member 3 - base look: colours (light theme), page layout, header, tabs, cards, controls, buttons, animations. */
+
+:root {
+  --bg: #f4f6f9;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e2e5ea;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #eef1f6;
+  --secondary-text: #374151;
+  --hover: #e4e8ee;
+  --idle: #d1d5db;
+  --input-bg: #ffffff;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --success: #059669;
+  --chart-grid: #e2e5ea;
+  --chart-tick: #6b7280;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0 0 0;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.header-inner {
+  width: min(94%, 1400px);
+  margin: 0 auto;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--secondary-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-ghost:hover { background: var(--hover); }
+.btn-ghost:active { transform: scale(0.96); }
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background: var(--secondary);
+  color: var(--secondary-text);
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.tab-btn:hover:not(.active) { background: var(--hover); }
+.tab-btn:active { transform: scale(0.97); }
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* ---------- Layout ---------- */
+main {
+  width: min(94%, 1400px);
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.35s ease;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+/* ---------- Controls (algorithm select, quantum, count ...) ---------- */
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: end;
+}
+
+.control-row label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: var(--muted);
+  gap: 4px;
+  max-width: 260px;
+  opacity: 1;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-width 0.25s ease, margin-right 0.25s ease;
+}
+
+/* fields that fade away when the chosen algorithm does not need them */
+.control-row label.control-hidden {
+  opacity: 0;
+  max-width: 0;
+  margin-right: -20px;
+  pointer-events: none;
+}
+
+select, input[type="number"] {
+  background: var(--input-bg);
+  color: var(--text);
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  min-width: 70px;
+  max-width: 100%;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+
+.checkbox-group span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.checkbox-group label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+  max-width: none;
+  overflow: visible;
+}
+
+.hint {
+  margin: 12px 0 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary, .btn-secondary {
+  padding: 9px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25); }
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover { background: var(--hover); }
+.btn-primary:active, .btn-secondary:active { transform: scale(0.96); }
+
+.btn-small {
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.control-row .btn-secondary {
+  margin-bottom: 0;
+  padding: 7px 18px;
+  font-size: 0.95rem;
+}
+
+/* ---------- Output area fade-in ---------- */
+.output {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.output.show { opacity: 1; transform: translateY(0); }
+.output.hidden { display: none; }
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes growIn {
+  from { opacity: 0; transform: scaleX(0.4); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes fadeInRow {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
