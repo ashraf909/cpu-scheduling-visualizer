@@ -42,10 +42,6 @@ function initModule(prefix, saved) {
 function activateTab(tabId) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
   document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
-  if (pb.result) {
-    pbStopTimer();
-    pbRender();
-  }
   saveState();
 }
 
@@ -61,6 +57,7 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 
   if (saved && saved.m1 && ["fcfs", "sjf", "priority", "rr"].includes(saved.m1.algo)) {
     $("m1-algo").value = saved.m1.algo;
+    renderAlgoInfo(saved.m1.algo);
   }
   if (saved && saved.m2 && Array.isArray(saved.m2.algos)) {
     document.querySelectorAll(".m2-algo-check").forEach(cb => { cb.checked = saved.m2.algos.includes(cb.value); });

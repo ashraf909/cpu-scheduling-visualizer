@@ -1,6 +1,5 @@
-/* OWNER: Member 3 - Gantt chart blocks, time labels, playhead, and the Play/Step playback panel. */
+/* OWNER: Member 3 - Gantt chart blocks and time labels. */
 
-/* ---------- Gantt chart ---------- */
 .gantt {
   display: flex;
   align-items: flex-end;
@@ -38,15 +37,6 @@
   color: var(--muted);
 }
 
-/* during playback: blocks not reached yet are faded, the running block is outlined */
-.gantt-block.pb-future { filter: grayscale(1) opacity(0.35); }
-
-.gantt-block.pb-active {
-  outline: 3px solid var(--text);
-  outline-offset: -3px;
-  z-index: 2;
-}
-
 .gantt-block .time-label {
   position: absolute;
   bottom: -22px;
@@ -63,133 +53,3 @@
   right: 0;
   transform: translateX(50%);
 }
-
-.playhead {
-  position: absolute;
-  top: 3px;
-  bottom: 20px;
-  left: 0;
-  width: 2px;
-  background: var(--text);
-  z-index: 4;
-  pointer-events: none;
-  transition: left 0.35s linear;
-}
-
-.playhead::before {
-  content: "";
-  position: absolute;
-  top: -7px;
-  left: -4px;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid var(--text);
-}
-
-/* ---------- Playback panel ---------- */
-.playback { margin-bottom: 20px; }
-
-.pb-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 10px;
-}
-
-.pb-speed {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.75rem;
-  color: var(--muted);
-  gap: 2px;
-  margin-left: 6px;
-}
-
-.pb-speed select { padding: 3px 6px; font-size: 0.85rem; }
-
-.pb-clock {
-  margin-left: auto;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--primary);
-}
-
-.pb-hint {
-  margin: 12px 0 0 0;
-  font-size: 0.85rem;
-  color: var(--muted);
-  display: none;
-}
-
-.playback.pb-idle .pb-hint { display: block; }
-.playback.pb-idle .pb-status,
-.playback.pb-idle .pb-bars { display: none; }
-
-.pb-status {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.pb-label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 4px;
-}
-
-.pb-note {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-left: 4px;
-}
-
-.chip {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin: 2px 4px 2px 0;
-}
-
-.chip.muted {
-  background: var(--secondary);
-  color: var(--muted);
-  border: 1px solid var(--border);
-}
-
-.pb-bars {
-  display: grid;
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.pb-bar-row {
-  display: grid;
-  grid-template-columns: 36px 1fr 54px;
-  gap: 10px;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--secondary-text);
-}
-
-.pb-track {
-  height: 10px;
-  background: var(--secondary);
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.pb-fill {
-  height: 100%;
-  width: 0;
-  border-radius: 5px;
-  transition: width 0.3s ease;
-}
-
-.pb-count { text-align: right; color: var(--muted); }

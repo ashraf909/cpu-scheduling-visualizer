@@ -1,7 +1,17 @@
 // OWNER: Member 1 - Module 1 (single algorithm): what happens when you press "Run".
 
+function renderAlgoInfo(algoKey) {
+  const algo = ALGORITHMS[algoKey];
+  $("m1-algo-info").innerHTML = `<h4>${algo.name}</h4><p>${algo.description}</p>`;
+}
+
 wireModule("m1");
-$("m1-algo").addEventListener("change", () => { refreshControls("m1"); clearErrors("m1"); });
+renderAlgoInfo($("m1-algo").value);
+$("m1-algo").addEventListener("change", () => {
+  refreshControls("m1");
+  clearErrors("m1");
+  renderAlgoInfo($("m1-algo").value);
+});
 
 $("m1-run").addEventListener("click", () => {
   const algoKey = $("m1-algo").value;
@@ -19,7 +29,6 @@ $("m1-run").addEventListener("click", () => {
   const colorMap = buildColorMap(processes);
 
   renderGantt($("m1-gantt"), result.gantt, colorMap);
-  setupPlayback(result, colorMap);
   renderResultsTable($("m1-results"), result.results);
   renderSummary($("m1-summary"), result);
 

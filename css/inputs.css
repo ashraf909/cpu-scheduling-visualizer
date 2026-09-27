@@ -114,3 +114,21 @@ input.invalid {
   margin-bottom: 6px;
   line-height: 1.2;
 }
+
+/* ---------- Algorithm description box ---------- */
+.algo-info {
+  border-left: 3px solid var(--primary);
+}
+
+.algo-info h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.algo-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--secondary-text);
+  line-height: 1.5;
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   HTML OWNERSHIP (edit only the part marked with YOUR member number):
-    Member 3 : page skeleton, header title + tabs, Gantt chart + playback panel
+    Member 3 : page skeleton, header title + tabs, Gantt chart
     Member 1 : Module 1 controls, input table, process table, summary tiles
     Member 2 : Theme/Print buttons, whole Module 2 page
 -->
@@ -78,6 +78,8 @@ try {
       <p class="hint">Changing the number of processes keeps the values you already typed. Arrival 0&ndash;99, burst 1&ndash;50.</p>
     </div>
 
+    <div id="m1-algo-info" class="algo-info card"></div>
+
     <div class="card">
       <div class="input-toolbar no-print">
         <label>Load example
@@ -97,33 +99,9 @@ try {
 
     <div id="m1-output" class="output hidden">
 
-      <!-- ===== MEMBER 3: Gantt chart + playback panel ===== -->
+      <!-- ===== MEMBER 3: Gantt chart ===== -->
       <h3>Gantt Chart</h3>
       <div id="m1-gantt" class="gantt"></div>
-
-      <div id="m1-playback" class="playback card no-print pb-idle">
-        <div class="pb-controls">
-          <button id="pb-play" class="btn-primary btn-small" type="button">Play</button>
-          <button id="pb-step" class="btn-secondary btn-small" type="button">Step</button>
-          <button id="pb-reset" class="btn-secondary btn-small" type="button">Reset</button>
-          <label class="pb-speed">Speed
-            <select id="pb-speed">
-              <option value="0.5">0.5x</option>
-              <option value="1" selected>1x</option>
-              <option value="2">2x</option>
-              <option value="4">4x</option>
-            </select>
-          </label>
-          <span id="pb-clock" class="pb-clock">Ready</span>
-        </div>
-        <p class="pb-hint">Press Play or Step to watch the CPU run this schedule one time unit at a time.</p>
-        <div class="pb-status">
-          <div><span class="pb-label">CPU</span><span id="pb-cpu"></span></div>
-          <div><span class="pb-label">Ready queue</span><span id="pb-queue"></span></div>
-          <div><span class="pb-label">Finished</span><span id="pb-done"></span></div>
-        </div>
-        <div id="pb-bars" class="pb-bars"></div>
-      </div>
       <!-- ===== end MEMBER 3 ===== -->
 
       <!-- ===== MEMBER 1: process table + summary tiles ===== -->
@@ -235,7 +213,6 @@ try {
 <script src="js/ui/inputs.js"></script>
 <script src="js/ui/results.js"></script>
 <script src="js/ui/gantt.js"></script>
-<script src="js/ui/playback.js"></script>
 <script src="js/ui/module1.js"></script>
 <script src="js/ui/module2.js"></script>
 <script src="js/ui/theme-print.js"></script>
