@@ -1,0 +1,70 @@
+/* OWNER: Member 2 - dark mode colours, phone/tablet layout, and print layout.
+   Loaded LAST so these rules can override the others. */
+
+/* ---------- Dark mode ---------- */
+:root[data-theme="dark"] {
+  --bg: #0f141b;
+  --card-bg: #171d26;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: #2a3341;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --secondary: #1f2733;
+  --secondary-text: #d1d5db;
+  --hover: #2a3444;
+  --idle: #3a4352;
+  --input-bg: #0f141b;
+  --danger: #f87171;
+  --danger-bg: #2a1518;
+  --success: #34d399;
+  --chart-grid: #2a3341;
+  --chart-tick: #9ca3af;
+  color-scheme: dark;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+  .app-header h1 { font-size: 1.15rem; }
+  .tab-btn { font-size: 0.85rem; padding: 8px 10px; }
+  .control-row { gap: 12px; }
+  .control-row label { max-width: 100%; }
+  .control-row label.control-hidden { margin-right: 0; }
+  table.input-table input { width: 64px; }
+  table.input-table th, table.input-table td,
+  table.results-table th, table.results-table td { padding: 6px 6px; font-size: 0.8rem; }
+  .chart-wrap { height: 260px; }
+  .pb-clock { margin-left: 0; width: 100%; }
+  .summary div { flex: 1 1 120px; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  :root, :root[data-theme="dark"] {
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --text: #000000;
+    --muted: #444444;
+    --border: #bbbbbb;
+    --secondary: #f1f1f1;
+    --secondary-text: #000000;
+    --idle: #dddddd;
+    --input-bg: #ffffff;
+    color-scheme: light;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print, .error-box, .btn-primary, .btn-secondary { display: none !important; }
+  .output { opacity: 1 !important; transform: none !important; }
+  .card { break-inside: avoid; }
+  .gantt { overflow: visible; }
+  .gantt-block.pb-future { filter: none; }
+  main { width: 100%; }
+  .header-inner { width: 100%; }
+}

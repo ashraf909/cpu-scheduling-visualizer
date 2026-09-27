@@ -1,0 +1,34 @@
+/* OWNER: Member 2 - Module 2 (comparison): per-algorithm cards, verdict box, charts. */
+
+.algo-card { margin-bottom: 28px; }
+.algo-card h3 { margin-bottom: 6px; }
+
+.verdict h3 { margin: 0 0 8px 0; font-size: 1rem; }
+.verdict ul { margin: 0; padding-left: 20px; }
+.verdict li { margin-bottom: 6px; font-size: 0.9rem; line-height: 1.5; }
+.verdict li.note { color: var(--muted); }
+
+.chart-title { margin: 0 0 8px 0; font-size: 1rem; }
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.85rem;
+  color: var(--secondary-text);
+  margin-bottom: 12px;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 320px;
+}
