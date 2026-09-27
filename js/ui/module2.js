@@ -3,6 +3,7 @@
 
 let m2Chart = null;
 let m2Chart2 = null;
+let m2Donuts = [];
 
 wireModule("m2");
 document.querySelectorAll(".m2-algo-check").forEach(cb => {
@@ -45,6 +46,45 @@ function styleChart(chart) {
   chart.options.scales.y.title.color = c.tick;
   chart.options.scales.x.ticks.color = c.tick;
   chart.update("none");
+}
+
+// ---------- Per-algorithm CPU busy/idle donut ----------
+function donutColors() {
+  const cs = getComputedStyle(document.documentElement);
+  return { busy: cs.getPropertyValue("--primary").trim(), idle: cs.getPropertyValue("--idle").trim() };
+}
+
+function renderDonut(canvas, result) {
+  const busy = result.totalTime - result.idleTime;
+  const dc = donutColors();
+  return new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: ["Busy", "Idle"],
+      datasets: [{ data: [busy, result.idleTime], backgroundColor: [dc.busy, dc.idle], borderWidth: 0 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "68%",
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.label}: ${ctx.parsed} time unit${ctx.parsed === 1 ? "" : "s"} (${((ctx.parsed / result.totalTime) * 100).toFixed(1)}%)`
+          }
+        }
+      }
+    }
+  });
+}
+
+function styleDonuts() {
+  const dc = donutColors();
+  m2Donuts.forEach(chart => {
+    chart.data.datasets[0].backgroundColor = [dc.busy, dc.idle];
+    chart.update("none");
+  });
 }
 
 function renderM2Charts(comparisons) {
@@ -146,6 +186,8 @@ $("m2-run").addEventListener("click", () => {
   const priorityOrder = $("m2-priority-order").value;
   const colorMap = buildColorMap(processes);
   const container = $("m2-results-container");
+  m2Donuts.forEach(chart => chart.destroy());
+  m2Donuts = [];
   container.innerHTML = "";
 
   const comparisons = selected.map(key => {
@@ -154,17 +196,31 @@ $("m2-run").addEventListener("click", () => {
   });
 
   comparisons.forEach(c => {
+    const busy = c.result.totalTime - c.result.idleTime;
+    const busyPct = c.result.totalTime > 0 ? ((busy / c.result.totalTime) * 100).toFixed(1) : "0.0";
+    const idlePct = c.result.totalTime > 0 ? ((c.result.idleTime / c.result.totalTime) * 100).toFixed(1) : "0.0";
+
     const card = document.createElement("div");
     card.className = "algo-card card";
     card.innerHTML = `<h3>${c.name}</h3>
       <div class="gantt"></div>
       <div class="table-scroll"><table class="results-table"></table></div>
-      <div class="summary"></div>`;
+      <div class="summary-row">
+        <div class="summary"></div>
+        <div class="donut-block">
+          <div class="donut-wrap"><canvas class="algo-donut"></canvas></div>
+          <div class="donut-legend">
+            <span><span class="legend-swatch" style="background:var(--primary)"></span>Busy <b>${busyPct}%</b></span>
+            <span><span class="legend-swatch" style="background:var(--idle)"></span>Idle <b>${idlePct}%</b></span>
+          </div>
+        </div>
+      </div>`;
     container.appendChild(card);
 
     renderGantt(card.querySelector(".gantt"), c.result.gantt, colorMap);
     renderResultsTable(card.querySelector("table"), c.result.results);
     renderSummary(card.querySelector(".summary"), c.result);
+    m2Donuts.push(renderDonut(card.querySelector(".algo-donut"), c.result));
   });
 
   const bestWaiting = Math.min(...comparisons.map(c => c.result.avgWaitingTime));

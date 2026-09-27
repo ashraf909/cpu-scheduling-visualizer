@@ -6,6 +6,7 @@ function applyTheme(theme) {
   $("theme-toggle").textContent = theme === "dark" ? "Light mode" : "Dark mode";
   styleChart(m2Chart);
   styleChart(m2Chart2);
+  styleDonuts();
 }
 
 $("theme-toggle").addEventListener("click", () => {
