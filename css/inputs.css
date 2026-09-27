@@ -1,0 +1,116 @@
+/* OWNER: Member 1 - input table, results tables, example/random toolbar, error messages, summary tiles. */
+
+/* ---------- Example dropdown + Randomize row ---------- */
+.input-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.input-toolbar label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: var(--muted);
+  gap: 4px;
+}
+
+.toolbar-or {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding-bottom: 8px;
+}
+
+/* ---------- Tables ---------- */
+.table-scroll { overflow-x: auto; }
+
+table.input-table, table.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table.input-table th, table.input-table td,
+table.results-table th, table.results-table td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+table.input-table th, table.results-table th {
+  background: var(--secondary);
+  color: var(--secondary-text);
+}
+
+table.input-table input {
+  width: 80px;
+  padding: 5px;
+  text-align: center;
+}
+
+/* Priority column is hidden unless the Priority algorithm is used */
+table.input-table.hide-priority .col-priority { display: none; }
+
+table.input-table tr,
+table.results-table tr {
+  animation: fadeInRow 0.3s ease backwards;
+}
+
+table.input-table tr:hover,
+table.results-table tr:hover {
+  background: var(--secondary);
+}
+
+/* best algorithm row in the comparison table */
+tr.best-row td {
+  font-weight: 700;
+  color: var(--success);
+}
+
+/* ---------- Error messages ---------- */
+input.invalid {
+  border-color: var(--danger) !important;
+  background: var(--danger-bg) !important;
+}
+
+.error-box {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.error-box.hidden { display: none; }
+.error-box ul { margin: 6px 0 0 0; padding-left: 18px; }
+
+/* ---------- Summary tiles (average waiting time, CPU utilization ...) ---------- */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.summary div {
+  flex: 1 1 150px;
+  background: var(--secondary);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.summary strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
