@@ -1,12 +1,14 @@
 // OWNER: Member 1 - the process input table, example presets, Randomize and "Set Processes".
 // prefix is "m1" (Module 1) or "m2" (Module 2).
 
+// algo (optional): this example is built to demonstrate one specific algorithm,
+// so picking it also selects that algorithm for you.
 const PRESETS = {
   basic: { label: "Basic (4 processes)", rows: [[0, 4, 1], [1, 5, 2], [2, 6, 3], [3, 4, 4]] },
   idle: { label: "CPU idle gaps (utilization below 100%)", rows: [[0, 3, 2], [8, 4, 1], [9, 2, 3], [15, 3, 1]] },
   same: { label: "All arrive at time 0", rows: [[0, 6, 3], [0, 2, 1], [0, 8, 4], [0, 3, 2]] },
-  textbook: { label: "Textbook priority example (5 processes)", rows: [[0, 10, 3], [0, 1, 1], [0, 2, 4], [0, 1, 5], [0, 5, 2]] },
-  rr: { label: "Round Robin classic (quantum 4)", rows: [[0, 24, 1], [0, 3, 2], [0, 3, 3]], quantum: 4 }
+  textbook: { label: "Textbook priority example (5 processes)", rows: [[0, 10, 3], [0, 1, 1], [0, 2, 4], [0, 1, 5], [0, 5, 2]], algo: "priority" },
+  rr: { label: "Round Robin classic (quantum 4)", rows: [[0, 24, 1], [0, 3, 2], [0, 3, 3]], quantum: 4, algo: "rr" }
 };
 
 // rows = optional list of [arrival, burst, priority]; missing rows get default values
@@ -74,6 +76,18 @@ function applyPreset(prefix, key) {
   $(`${prefix}-count`).value = p.rows.length;
   buildInputTable($(`${prefix}-input-table`), p.rows.length, p.rows);
   if (p.quantum) $(`${prefix}-quantum`).value = p.quantum;
+
+  if (p.algo) {
+    if (prefix === "m1") {
+      $("m1-algo").value = p.algo;
+      if (typeof renderAlgoInfo === "function") renderAlgoInfo(p.algo);
+    } else {
+      const box = document.querySelector(`.m2-algo-check[value="${p.algo}"]`);
+      if (box) box.checked = true;
+    }
+  }
+
+  refreshControls(prefix);
   clearErrors(prefix);
   hideOutput($(`${prefix}-output`));
   saveState();
